@@ -61,6 +61,6 @@ func main() {
 	}
 	fmt.Printf("connect succeed...\n")
 
-	study.Start(db)
+	//study.Start(db)
 
 }
