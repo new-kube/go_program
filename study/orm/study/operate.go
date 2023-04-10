@@ -6,18 +6,31 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
 func Connect() (*gorm.DB, error) {
 
 	user := "root"
 	pass := "123456"
-	dbname := "study"
+	host := "localhost"
+	port := 3306
+	database := "test"
 
-	dsn := fmt.Sprintf("%s:%s@tcp(127.0.0.1:3306)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, pass, dbname)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, pass, host, port, database)
+	db, err := gorm.Open(
+		mysql.Open(dsn),
+		&gorm.Config{
+			SkipDefaultTransaction: true,
+			PrepareStmt:            true,
+			//Logger:                 log.Default(),
+			NamingStrategy: schema.NamingStrategy{ // 禁用表名复数。
+				SingularTable: true,
+			},
+		},
+	)
 	if err != nil {
-		fmt.Printf("connect db=%s failed, err=%v\n", dbname, err)
+		fmt.Printf("connect db=%s failed, err=%v\n", database, err)
 		return nil, err
 	}
 

@@ -52,7 +52,6 @@ func testUpdate(db *gorm.DB) {
 }
 
 func main() {
-
 	// 连接数据库
 	db, err := study.Connect()
 	if err != nil {
@@ -62,5 +61,21 @@ func main() {
 	fmt.Printf("connect succeed...\n")
 
 	//study.Start(db)
+	ctx := context.Background()
 
+	if err := study.AddTestRecords(ctx, db); err != nil {
+		fmt.Printf("error for add test records: %v\n", err)
+		return
+	}
+
+	results, err := study.GroupBy(ctx, db)
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return
+	}
+
+	fmt.Printf("count: %d\n", len(results))
+	for _, result := range results {
+		fmt.Printf("name: %s, total: %d\n", result.Name, result.Total)
+	}
 }

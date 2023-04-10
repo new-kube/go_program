@@ -1,4 +1,4 @@
-package tempconv
+package main
 
 import "fmt"
 
@@ -18,3 +18,14 @@ func FToC(f Fahrenheit) Celsius { return Celsius((f - 32) * 5 / 9) }
 
 func (c Celsius) String() string    { return fmt.Sprintf("%g°C", c) } // 类型方法集
 func (f Fahrenheit) String() string { return fmt.Sprintf("%g°F", f) }
+
+func main() {
+	c := Celsius(0)
+
+	fmt.Println(c.String())
+	fmt.Printf("%s\n", c) // 会调用String()方法。
+	fmt.Printf("%v\n", c) // 会调用String()方法
+	fmt.Println(c)        // %v 方式，转换 对象
+	fmt.Printf("%f\n", c)
+	fmt.Println(float64(c))
+}
