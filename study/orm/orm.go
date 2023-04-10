@@ -41,18 +41,17 @@ func testUpdate(db *gorm.DB) {
 	}
 
 	user2 := study.User{
-		ID:    user.ID,
-		Name:  "hello",
+		ID:    2,
+		Name:  "yangxingya",
 		Phone: "12345678901",
 	}
-	if err := repo.UpdateSome(ctx, &user2); err != nil {
+	if err := repo.Create(ctx, &user2); err != nil {
 		fmt.Printf("update some failed, err=%v\n", err)
 		return
 	}
 }
 
 func main() {
-
 	// 连接数据库
 	db, err := study.Connect()
 	if err != nil {
@@ -61,6 +60,6 @@ func main() {
 	}
 	fmt.Printf("connect succeed...\n")
 
-	study.Start(db)
-
+	testUpdate(db)
+	// study.Start(db)
 }

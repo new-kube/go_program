@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func main() {
 	i := 10
@@ -25,6 +28,7 @@ func main() {
 		A string
 		b int
 		C bool
+		H *hello
 	}
 
 	h := hello{
@@ -32,9 +36,21 @@ func main() {
 		b: 123,
 		C: true,
 	}
+	h.H = &h
 	fmt.Printf("h = %v\n", h)
 
 	fmt.Printf("h's type = %T\n", h)
 	fmt.Printf("I am a %%\n")
+
+	hx := &h
+	fmt.Printf("&h = %v, %v, %+v\n", &h, hx, &h)
+
+	// %f/%g/%e
+	// %f的小数精度是 6 位, 可以使用 %.<n>f方式指定后面的位数。
+	// %g的小数精度为 15位
+	// %e为科学计数法，小数点后精度为6位和%f相同。
+
+	x := math.Pi
+	fmt.Printf("pi = %.8f, %g, %e\n", x, x, x)
 
 }

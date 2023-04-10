@@ -12,4 +12,13 @@ func main() {
 		sep = " "
 	}
 	fmt.Println(s)
+
+	range_test()
+}
+
+func range_test() {
+	a := []int{11, 12, 13, 14, 15}
+	for i, v := range a { // 注意i的值，会从0开始递增。
+		fmt.Printf("a[%d]=%d\n", i, v)
+	}
 }
