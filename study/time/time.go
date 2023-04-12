@@ -53,7 +53,7 @@ func (t *Time) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func main() {
+func test() {
 
 	tm := time.Time{}
 	t := tm.Format("2006-01-02 15:04:05")
@@ -80,4 +80,40 @@ func main() {
 	err = json.Unmarshal(data, &tt2)
 	fmt.Printf("data=%s, value=%+v, err=%v\n", string(data), tt2, err)
 
+}
+
+const (
+	oneDaySeconds = 24 * 60 * 60
+)
+
+func test_floor() {
+
+	now := time.Now().Unix()
+
+	// floor date 2023-04-11 00:00:00
+	// 今日开始，结束时间
+	beg := int(now - (now % oneDaySeconds))
+	end := beg + oneDaySeconds
+
+	// 昨日开始，结束时间
+	yesBeg := beg - oneDaySeconds
+	yesEnd := beg
+
+	// 今日、昨日日期。
+	day, yesDay := beg, yesBeg
+
+	for i := 30; i > 0; i-- {
+		start := beg - i*oneDaySeconds
+		stop := start + oneDaySeconds
+
+		fmt.Printf("i = %d, start=%d, stop=%d\n", i, start, stop)
+	}
+
+	fmt.Printf("yes beg = %d, end = %d\n", yesBeg, yesEnd)
+	fmt.Printf("now beg = %d, end = %d\n", beg, end)
+	fmt.Printf("date now day = %d, yes day = %d\n", day, yesDay)
+}
+
+func main() {
+	test_floor()
 }
