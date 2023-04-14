@@ -54,6 +54,7 @@ func testIotaSimple() {
 
 func testIotaComplex() {
 	// 无类型常量，会根据赋值语句左边的类型来赋值对应的类型。从而能保证动态特性和精度。
+	// 无类型常量，通常在const声明的时候不指定类型，就是无类型常量。通常精度会很高，能达到256位或者更高。
 	const (
 		_ = 1 << (10 * iota)
 		KiB
