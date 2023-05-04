@@ -31,10 +31,11 @@ func main() {
 
 	// Seconds field, required
 	//c := cron.New(cron.WithSeconds())
-	c := cron.New(cron.WithSeconds())
+	c := cron.New(cron.WithSeconds()) // cron表达式带秒。
 
 	w := NewWorker(1)
 
+	// 32分0秒 开始执行，
 	c.AddJob("0 32 * * * *", w)
 	c.Start()
 

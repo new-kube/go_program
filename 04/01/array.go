@@ -13,13 +13,22 @@ func array() {
 	fmt.Println(a[0])
 	fmt.Println(a[len(a)-1])
 
+	// 遍历，三种方式
+	// 1. 索引和值
 	for i, v := range a {
 		fmt.Printf("%d %d\n", i, v)
 	}
 
+	// 2. 仅仅值
 	for _, v := range a {
 		fmt.Printf("%d\n", v)
 	}
+
+	// 3. 仅仅索引，通常不这么使用，有时候会用a[i]的方式使用
+	for i := range a {
+		fmt.Printf("a[%d]=%d\n", i, a[i])
+	}
+
 }
 
 func array_init() {
@@ -46,9 +55,14 @@ func array_init() {
 		RMB
 	)
 
+	// 两种声明方式。`...` 方式
+	var d = [...]int{99: 1}
+	fmt.Printf("d, type=%T\n", d)
+
 	symbol := [...]string{USD: "$", EUR: "E", GBP: "L", RMB: "￥"}
 	fmt.Println(RMB, symbol[RMB])
 	// 上面的赋值，索引不需要按照顺序出现，并且中间可以缺失，缺失补充为零值，
+	// 通常用于稀疏数组，即大部分数值为零，少部分非零，可以这样使用。
 	r := [...]int{99: -1}
 	fmt.Printf("r, type=%T\n", r)
 }
@@ -64,7 +78,7 @@ func array_compare() {
 	fmt.Println(a == b, a == c, b == c)
 
 	d := [3]int{1, 2}
-	//fmt.Println(a == d) // 编译错误，不同类型的数组，无法比较
+	//fmt.Println(a == d) // 编译错误，不同类型的数组，无法比较 按照编译错误来处理，根本无法编译通过。
 	fmt.Printf("d type=%T\n", d)
 }
 
