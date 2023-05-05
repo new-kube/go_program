@@ -37,8 +37,22 @@ func slice_feature() {
 	//fmt.Printf("%v\n", summer[:20]) // panic
 
 	// 如果slice的引用超过了当前的长度(注意不是容量，容量超过了会panic)，但是没有超过容量，那么slice会自动扩展。
+	// 注意，这个扩展，只是新的slice扩展了，原来的slice不会变化。
 	extendSummer := summer[:5]
 	fmt.Printf("extendSummer=%v, len=%d, cap=%d\n", extendSummer, len(extendSummer), cap(extendSummer))
+	fmt.Printf("summer=%v, len=%d, cap=%d\n", summer, len(summer), cap(summer))
+
+	// make创建一个无名数组，并且只能给对应复制的slice使用。
+	// 3种创建方式:
+	//   1. make([]T, len)
+	//   2. make([]T, len, cap)
+	//   3. make([]T, cap)[:len]
+	// 如下的初始化等价于 make([]int, 5, 10)，即长度为5，容量为10。
+	// 很有意思，注意和make([]int, 10)的区别。
+	x := make([]int, 10)[:5]
+	fmt.Printf("x=%v, len=%d, cap=%d\n", x, len(x), cap(x))
+	x = make([]int, 10)
+	fmt.Printf("x=%v, len=%d, cap=%d\n", x, len(x), cap(x))
 }
 
 // 注意，slice和array的区别，
@@ -82,7 +96,49 @@ func empty_and_nil() {
 	fmt.Printf("not panic\n")
 }
 
+func append_int(x []int, y int) []int {
+	var z []int
+	zlen := len(x) + 1
+	if zlen <= cap(x) {
+		// slice仍然有增长的空间，扩展slice
+		z = x[:zlen]
+	} else {
+		// slice已经没有增长的空间，分配一个新的底层数组。
+		// 为了达到分摊线性复杂性，容量扩展一倍。
+		zcap := zlen
+		if zcap < 2*len(x) {
+			zcap = 2 * len(x)
+		}
+		z = make([]int, zlen, zcap)
+		copy(z, x) // 内置的copy函数
+	}
+	z[len(x)] = y
+	return z
+}
+
+func slice_append() {
+	var x, y []int
+	for i := 0; i < 10; i++ {
+		y = append_int(x, i)
+		fmt.Printf("%d cap=%d\t%v\n", i, cap(y), y)
+		x = y
+	}
+
+	/*
+		// int的slice底层更新如下的结构，这个结果更多的是复合结构，与其说是引用，不如说是个复合结构。
+		// 并且改动的时候，指针指向的是同一个地址，所以可以改变。len和cap也是可以变化的。两者都可以变化
+		// 包括ptr变化、len/cap不变。ptr不变、len/cap变化。ptr变化、len/cap变化。三种情况。
+		// 底层的append内置函数远比上面的append_int复杂的多。
+		type IntSlice struct {
+			ptr *int
+			len int
+			cap int
+		}
+	*/
+}
+
 func main() {
-	slice_feature()
-	empty_and_nil()
+	//slice_feature()
+	//empty_and_nil()
+	slice_append()
 }
