@@ -17,7 +17,7 @@ var myStruct = `
 }
 `
 
-func main() {
+func test() {
 
 	data := []byte(myStruct)
 
@@ -43,4 +43,57 @@ func main() {
 
 	fmt.Printf("succeed, result=%+v\n", x)
 
+}
+
+type World struct {
+	C int    `json:"c"`
+	D int    `json:"d"`
+	E string `json:"e"`
+}
+
+type Hello struct {
+	A int   `json:"a"`
+	B World `json:"b,string"`
+}
+
+// 嵌套字符串转换为结构体
+var hello = `
+{
+	"a": 1,
+	"b": "{\"c\": 2, \"d\": 3, \"e\": \"hello\"}"
+}
+`
+
+func test_struct_to_string_wrap() {
+	x := Hello{}
+	if err := json.Unmarshal([]byte(hello), &x); err != nil {
+		fmt.Printf("error=%v\n", err)
+		return
+	}
+	fmt.Printf("succeed, result=%+v\n", x)
+}
+
+type Hello2 struct {
+	A int    `json:"a"`
+	B string `json:"b"`
+}
+
+func test_struct_to_string_wrap2() {
+	x := Hello2{}
+	if err := json.Unmarshal([]byte(hello), &x); err != nil {
+		fmt.Printf("error=%v\n", err)
+		return
+	}
+	fmt.Printf("succeed, result=%+v\n", x)
+
+	y := World{}
+	if err := json.Unmarshal([]byte(x.B), &y); err != nil {
+		fmt.Printf("error wrap=%v\n", err)
+		return
+	}
+	fmt.Printf("succeed, wrap result=%+v\n", x)
+}
+
+func main() {
+	test_struct_to_string_wrap2()
 }
